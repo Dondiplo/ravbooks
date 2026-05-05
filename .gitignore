@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.yarn/cache
+.yarn/install-state.gz
+
+# Build output
+packages/backend/dist/
+packages/frontend/.next/
+packages/frontend/out/
+
+# Environment files
+packages/backend/.env
+packages/frontend/.env.local
+
+# Embedded PostgreSQL data (local dev only)
+data/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+
+# Uploads
+packages/backend/uploads/

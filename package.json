@@ -1,0 +1,26 @@
+{
+  "name": "accounting-system",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "db:start": "node scripts/start-db.mjs",
+    "db:init": "node scripts/start-db.mjs --init",
+    "dev:backend": "yarn workspace @accounting/backend dev",
+    "dev:frontend": "yarn workspace @accounting/frontend dev",
+    "dev": "concurrently \"yarn dev:backend\" \"yarn dev:frontend\"",
+    "build:backend": "yarn workspace @accounting/backend build",
+    "build:frontend": "yarn workspace @accounting/frontend build",
+    "build": "yarn build:backend && yarn build:frontend",
+    "db:generate": "yarn workspace @accounting/backend db:generate",
+    "db:migrate": "yarn workspace @accounting/backend db:migrate",
+    "db:seed": "yarn workspace @accounting/backend db:seed",
+    "db:studio": "yarn workspace @accounting/backend db:studio"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "embedded-postgres": "16.13.0-beta.17"
+  }
+}
