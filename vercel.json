@@ -1,0 +1,6 @@
+{
+  "buildCommand": "yarn workspace @accounting/frontend build",
+  "outputDirectory": "packages/frontend/.next",
+  "installCommand": "yarn install",
+  "framework": "nextjs"
+}
