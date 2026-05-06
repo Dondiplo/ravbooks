@@ -120,12 +120,14 @@ export class InventoryService {
     const qtyBefore = new Decimal(item.quantityOnHand.toString());
 
     // For stock-out movements, quantity is negative
-    const isOut = [
-      StockMovementType.SALE,
-      StockMovementType.ADJUSTMENT_OUT,
-      StockMovementType.RETURN_OUT,
-      StockMovementType.WRITE_OFF,
-    ].includes(input.type);
+    const isOut = (
+      [
+        StockMovementType.SALE,
+        StockMovementType.ADJUSTMENT_OUT,
+        StockMovementType.RETURN_OUT,
+        StockMovementType.WRITE_OFF,
+      ] as StockMovementType[]
+    ).includes(input.type);
 
     const qtyChange = isOut ? qty.abs().negated() : qty.abs();
     const qtyAfter = qtyBefore.plus(qtyChange);

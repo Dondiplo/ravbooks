@@ -3,7 +3,7 @@ import { AccountsService } from './accounts.service';
 import { authenticate } from '../../middleware/auth.middleware';
 import { accountantOrAbove, adminOnly } from '../../middleware/rbac.middleware';
 
-const router = Router();
+const router: Router = Router();
 const service = new AccountsService();
 
 router.use(authenticate);

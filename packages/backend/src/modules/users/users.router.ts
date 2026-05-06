@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { authenticate } from '../../middleware/auth.middleware';
 import { adminOnly, accountantOrAbove } from '../../middleware/rbac.middleware';
 
-const router = Router();
+const router: Router = Router();
 const service = new UsersService();
 
 router.use(authenticate);

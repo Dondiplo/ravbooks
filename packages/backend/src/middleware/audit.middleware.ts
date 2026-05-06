@@ -3,7 +3,7 @@ import { prisma } from '../config/database';
 import { logger } from '../utils/logger';
 
 export function auditLog(action: string, entity: string) {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     const originalJson = res.json.bind(res);
     let responseBody: unknown;
 
@@ -17,7 +17,7 @@ export function auditLog(action: string, entity: string) {
 
       const entityId =
         req.params.id ??
-        (responseBody as Record<string, unknown>)?.data?.id?.toString() ??
+        ((responseBody as Record<string, unknown>)?.data as Record<string, unknown>)?.id?.toString() ??
         undefined;
 
       try {
@@ -27,7 +27,8 @@ export function auditLog(action: string, entity: string) {
             action,
             entity,
             entityId,
-            newValues: req.method !== 'GET' ? (req.body as Record<string, unknown>) : undefined,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            newValues: req.method !== 'GET' ? (req.body as any) : undefined,
             ipAddress: req.ip,
             userAgent: req.headers['user-agent'],
           },

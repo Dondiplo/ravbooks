@@ -4,7 +4,7 @@ import { authenticate } from '../../middleware/auth.middleware';
 import { accountantOrAbove, staffOrAbove } from '../../middleware/rbac.middleware';
 import { PaymentMethod } from '@prisma/client';
 
-const router = Router();
+const router: Router = Router();
 const service = new InvoicesService();
 
 router.use(authenticate);

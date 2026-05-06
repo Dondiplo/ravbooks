@@ -1,3 +1,4 @@
+import { InvoiceStatus } from '@prisma/client';
 import { prisma } from '../../config/database';
 import { ReportsEngine } from '../../core/accounting/reports.engine';
 import { AppError } from '../../middleware/error.middleware';
@@ -38,13 +39,10 @@ export class ReportsService {
 
   async getAgingReport(type: 'receivables' | 'payables') {
     const today = dayjs();
-    const status =
-      type === 'receivables'
-        ? { in: ['SENT', 'PARTIALLY_PAID', 'OVERDUE'] }
-        : undefined;
-
     const invoices = await prisma.invoice.findMany({
-      where: status ? { status } : {},
+      where: type === 'receivables'
+        ? { status: { in: ['SENT', 'PARTIALLY_PAID', 'OVERDUE'] as InvoiceStatus[] } }
+        : undefined,
       include: { customer: { select: { name: true } } },
       orderBy: { dueDate: 'asc' },
     });

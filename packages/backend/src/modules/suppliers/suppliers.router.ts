@@ -5,7 +5,7 @@ import { staffOrAbove } from '../../middleware/rbac.middleware';
 import { generateSupplierCode } from '../../utils/sequence';
 import { AppError } from '../../middleware/error.middleware';
 
-const router = Router();
+const router: Router = Router();
 
 router.use(authenticate, staffOrAbove);
 

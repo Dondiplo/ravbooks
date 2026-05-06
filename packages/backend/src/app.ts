@@ -1,5 +1,5 @@
 import 'express-async-errors';
-import express from 'express';
+import express, { Application, Router, RequestHandler } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -21,7 +21,7 @@ import customersRouter from './modules/customers/customers.router';
 import suppliersRouter from './modules/suppliers/suppliers.router';
 import reportsRouter from './modules/reports/reports.router';
 
-const app = express();
+const app: Application = express();
 
 // ─── Security ─────────────────────────────────────────────────────────────────
 app.use(
@@ -47,7 +47,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // ─── Body parsing ─────────────────────────────────────────────────────────────
-app.use(compression());
+app.use(compression() as unknown as RequestHandler);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -68,7 +68,7 @@ app.get('/health', (_req, res) => {
 });
 
 // ─── API Routes ───────────────────────────────────────────────────────────────
-const api = express.Router();
+const api: Router = express.Router();
 
 api.use('/auth', authRouter);
 api.use('/users', usersRouter);

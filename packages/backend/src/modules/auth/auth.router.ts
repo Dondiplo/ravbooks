@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { AuthService } from './auth.service';
 import { authenticate } from '../../middleware/auth.middleware';
 
-const router = Router();
+const router: Router = Router();
 const service = new AuthService();
 
 const validate = (req: Request, res: Response, next: () => void) => {

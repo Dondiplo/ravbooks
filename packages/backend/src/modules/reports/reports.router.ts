@@ -4,7 +4,7 @@ import { authenticate } from '../../middleware/auth.middleware';
 import { accountantOrAbove } from '../../middleware/rbac.middleware';
 import dayjs from 'dayjs';
 
-const router = Router();
+const router: Router = Router();
 const service = new ReportsService();
 
 router.use(authenticate, accountantOrAbove);

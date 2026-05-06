@@ -3,7 +3,7 @@ import { InventoryService } from './inventory.service';
 import { authenticate } from '../../middleware/auth.middleware';
 import { accountantOrAbove, staffOrAbove } from '../../middleware/rbac.middleware';
 
-const router = Router();
+const router: Router = Router();
 const service = new InventoryService();
 
 router.use(authenticate);

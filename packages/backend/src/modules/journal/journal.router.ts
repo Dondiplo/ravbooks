@@ -4,7 +4,7 @@ import { JournalService } from './journal.service';
 import { authenticate } from '../../middleware/auth.middleware';
 import { accountantOrAbove } from '../../middleware/rbac.middleware';
 
-const router = Router();
+const router: Router = Router();
 const service = new JournalService();
 
 router.use(authenticate, accountantOrAbove);
