@@ -138,7 +138,7 @@ export default function LedgerPage() {
                                 <div className="flex items-center gap-2">
                                   <BookOpen className="h-3 w-3 text-gray-400" />
                                   <span>{(line.account as Record<string, string>)?.code} — {(line.account as Record<string, string>)?.name}</span>
-                                  {line.description && <span className="text-gray-400">({line.description as string})</span>}
+                                  {!!line.description && <span className="text-gray-400">({line.description as string})</span>}
                                 </div>
                               </Td>
                               <Td />

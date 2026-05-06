@@ -172,7 +172,7 @@ export default function ExpensesPage() {
                     <Td><span className="font-mono text-xs text-brand-600">{exp.expenseNumber as string}</span></Td>
                     <Td>
                       <p className="font-medium max-w-xs truncate">{exp.description as string}</p>
-                      {exp.supplier && <p className="text-xs text-gray-400">{(exp.supplier as Record<string, string>).name}</p>}
+                      {!!exp.supplier && <p className="text-xs text-gray-400">{(exp.supplier as Record<string, string>).name}</p>}
                     </Td>
                     <Td>{(exp.category as string) ?? '—'}</Td>
                     <Td>{formatDate(exp.date as string)}</Td>

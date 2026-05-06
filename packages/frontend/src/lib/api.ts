@@ -1,4 +1,12 @@
 import axios, { AxiosError } from 'axios';
+import {
+  mockAuthApi, mockAccountsApi, mockJournalApi, mockInvoicesApi,
+  mockExpensesApi, mockInventoryApi, mockCustomersApi, mockSuppliersApi,
+  mockReportsApi, mockUsersApi,
+} from './mock-api';
+
+// When no backend URL is configured we run in demo mode with mock data.
+export const DEMO_MODE = !process.env.NEXT_PUBLIC_API_URL;
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
 
@@ -47,8 +55,9 @@ api.interceptors.response.use(
   },
 );
 
-// Typed API functions
-export const authApi = {
+// ─── Live API implementations ─────────────────────────────────────────────────
+
+const liveAuthApi = {
   login: (email: string, password: string) =>
     api.post('/auth/login', { email, password }).then((r) => r.data.data),
   me: () => api.get('/auth/me').then((r) => r.data.data),
@@ -56,7 +65,7 @@ export const authApi = {
     api.put('/auth/change-password', { currentPassword, newPassword }),
 };
 
-export const accountsApi = {
+const liveAccountsApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/accounts', { params }).then((r) => r.data.data),
   get: (id: string) => api.get(`/accounts/${id}`).then((r) => r.data.data),
@@ -68,7 +77,7 @@ export const accountsApi = {
     api.get(`/accounts/${id}/ledger`, { params }).then((r) => r.data.data),
 };
 
-export const journalApi = {
+const liveJournalApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/journal', { params }).then((r) => r.data.data),
   get: (id: string) => api.get(`/journal/${id}`).then((r) => r.data.data),
@@ -79,7 +88,7 @@ export const journalApi = {
     api.get('/journal/trial-balance', { params: { asOfDate } }).then((r) => r.data.data),
 };
 
-export const invoicesApi = {
+const liveInvoicesApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/invoices', { params }).then((r) => r.data.data),
   stats: () => api.get('/invoices/stats').then((r) => r.data.data),
@@ -92,7 +101,7 @@ export const invoicesApi = {
     api.post(`/invoices/${id}/cancel`, { reason }).then((r) => r.data.data),
 };
 
-export const expensesApi = {
+const liveExpensesApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/expenses', { params }).then((r) => r.data.data),
   get: (id: string) => api.get(`/expenses/${id}`).then((r) => r.data.data),
@@ -104,7 +113,7 @@ export const expensesApi = {
     api.get('/expenses/categories/stats', { params }).then((r) => r.data.data),
 };
 
-export const inventoryApi = {
+const liveInventoryApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/inventory', { params }).then((r) => r.data.data),
   get: (id: string) => api.get(`/inventory/${id}`).then((r) => r.data.data),
@@ -116,7 +125,7 @@ export const inventoryApi = {
   valuation: () => api.get('/inventory/valuation').then((r) => r.data.data),
 };
 
-export const customersApi = {
+const liveCustomersApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/customers', { params }).then((r) => r.data.data),
   get: (id: string) => api.get(`/customers/${id}`).then((r) => r.data.data),
@@ -125,14 +134,14 @@ export const customersApi = {
     api.put(`/customers/${id}`, data).then((r) => r.data.data),
 };
 
-export const suppliersApi = {
+const liveSuppliersApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/suppliers', { params }).then((r) => r.data.data),
   get: (id: string) => api.get(`/suppliers/${id}`).then((r) => r.data.data),
   create: (data: unknown) => api.post('/suppliers', data).then((r) => r.data.data),
 };
 
-export const reportsApi = {
+const liveReportsApi = {
   incomeStatement: (params?: Record<string, unknown>) =>
     api.get('/reports/income-statement', { params }).then((r) => r.data.data),
   balanceSheet: (params?: Record<string, unknown>) =>
@@ -145,7 +154,7 @@ export const reportsApi = {
   dashboard: () => api.get('/reports/dashboard').then((r) => r.data.data),
 };
 
-export const usersApi = {
+const liveUsersApi = {
   list: (params?: Record<string, unknown>) =>
     api.get('/users', { params }).then((r) => r.data.data),
   create: (data: unknown) => api.post('/users', data).then((r) => r.data.data),
@@ -153,3 +162,16 @@ export const usersApi = {
   auditLogs: (params?: Record<string, unknown>) =>
     api.get('/users/audit-logs', { params }).then((r) => r.data.data),
 };
+
+// ─── Exported API (real or mock depending on environment) ─────────────────────
+
+export const authApi     = DEMO_MODE ? mockAuthApi     : liveAuthApi;
+export const accountsApi = DEMO_MODE ? mockAccountsApi : liveAccountsApi;
+export const journalApi  = DEMO_MODE ? mockJournalApi  : liveJournalApi;
+export const invoicesApi = DEMO_MODE ? mockInvoicesApi : liveInvoicesApi;
+export const expensesApi = DEMO_MODE ? mockExpensesApi : liveExpensesApi;
+export const inventoryApi = DEMO_MODE ? mockInventoryApi : liveInventoryApi;
+export const customersApi = DEMO_MODE ? mockCustomersApi : liveCustomersApi;
+export const suppliersApi = DEMO_MODE ? mockSuppliersApi : liveSuppliersApi;
+export const reportsApi  = DEMO_MODE ? mockReportsApi  : liveReportsApi;
+export const usersApi    = DEMO_MODE ? mockUsersApi    : liveUsersApi;

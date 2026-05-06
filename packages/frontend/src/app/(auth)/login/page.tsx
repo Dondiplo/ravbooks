@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { DollarSign } from 'lucide-react';
+import { DollarSign, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { DEMO_MODE } from '@/lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,6 +43,25 @@ export default function LoginPage() {
           <span className="text-3xl font-bold text-white">AccountIQ</span>
         </div>
 
+        {DEMO_MODE && (
+          <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-2xl text-sm text-amber-800">
+            <p className="font-semibold flex items-center gap-1.5 mb-2">
+              <Zap className="h-4 w-4" /> Live demo — no backend required
+            </p>
+            <p className="text-amber-700 mb-3">Click the button below to log in instantly with sample data.</p>
+            <Button
+              type="button"
+              className="w-full bg-amber-500 hover:bg-amber-600"
+              onClick={() => {
+                setEmail('admin@demo.com');
+                setPassword('demo');
+              }}
+            >
+              Enter demo
+            </Button>
+          </div>
+        )}
+
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Sign in</h2>
           <p className="text-gray-500 text-sm mb-6">
@@ -73,12 +93,14 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-6 p-4 bg-gray-50 rounded-xl text-xs text-gray-500 space-y-1">
-            <p className="font-medium text-gray-700 mb-2">Demo credentials:</p>
-            <p>Admin: admin@accountiq.com / Admin@123</p>
-            <p>Accountant: accountant@accountiq.com / Accountant@123</p>
-            <p>Staff: staff@accountiq.com / Staff@123</p>
-          </div>
+          {!DEMO_MODE && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-xl text-xs text-gray-500 space-y-1">
+              <p className="font-medium text-gray-700 mb-2">Demo credentials:</p>
+              <p>Admin: admin@accountiq.com / Admin@123</p>
+              <p>Accountant: accountant@accountiq.com / Accountant@123</p>
+              <p>Staff: staff@accountiq.com / Staff@123</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

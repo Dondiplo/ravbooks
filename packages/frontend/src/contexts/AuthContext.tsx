@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { authApi } from '@/lib/api';
+import { authApi, DEMO_MODE } from '@/lib/api';
 
 interface User {
   id: string;
@@ -26,6 +26,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const loadUser = useCallback(async () => {
+    if (DEMO_MODE) {
+      const stored = sessionStorage.getItem('demo_user');
+      if (stored) setUser(JSON.parse(stored));
+      setIsLoading(false);
+      return;
+    }
     const token = localStorage.getItem('accessToken');
     if (!token) {
       setIsLoading(false);
@@ -48,14 +54,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const data = await authApi.login(email, password);
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
+    if (DEMO_MODE) {
+      sessionStorage.setItem('demo_user', JSON.stringify(data.user));
+    } else {
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+    }
     setUser(data.user);
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    if (DEMO_MODE) {
+      sessionStorage.removeItem('demo_user');
+    } else {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    }
     setUser(null);
     window.location.href = '/login';
   };
