@@ -44,7 +44,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use(limiter);
+app.use(limiter as unknown as RequestHandler);
 
 // ─── Body parsing ─────────────────────────────────────────────────────────────
 app.use(compression() as unknown as RequestHandler);
